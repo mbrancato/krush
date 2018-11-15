@@ -3,7 +3,7 @@
 krush - Apply templated Kubernetes manifests
 
 Usage:
-  krush [--vars=<file.vars>] [path]
+  krush [--vars=<file.vars>] [<path>]
 
 Arguments:
   path                    Optional search path or file name
@@ -50,6 +50,11 @@ class krush():
     elif os.path.isfile(self.__path) and (self.__path.endswith('.yaml') or self.__path.endswith('.yml')) and self.__path != varfilepath:
       self.__manifests.append(self.__path)
 
+    if not len(self.__manifests) > 0:
+      print("Unable to find manifests")
+      print("Please run: krush --help")
+      exit(1)
+
   def get_vars(self):
     self.__variables = []
     tempvars = []
@@ -78,20 +83,22 @@ class krush():
       p.communicate(input=rendered.encode('utf-8'))
 
 def main():
-  varfile = None
+  varfile = ""
   args = docopt(__doc__)
   if args['--vars']:
     varfile = os.path.abspath(args['--vars'])
-  path = os.path.abspath(args['path'])
+  if not args['<path>']:
+    p = "."
+  else:
+    p = args['<path>']
+  path = os.path.abspath(p)
   if varfile:
     with open(varfile, 'r') as f:
       vars = yaml.load(f)
-
-  if path and varfile and vars:
-    k = krush(path,varfile,vars)
   else:
-    print("Unable to find manifests")
-    print("Please run: krush --help")
+    vars = {}
+
+  k = krush(path,varfile,vars)
 
 if __name__ == "__main__":
     main()
