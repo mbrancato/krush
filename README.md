@@ -1,6 +1,6 @@
 # krush
 
-Krush uses simple templating logic to assist in the deployment of resources to Kubernetes. It allows operators to better align their process with GitOps by removing static variables and allowing those to be handled by downstream manual or CI/CD processes. When run, krush takes the rendered manifests and pipes the output to a `kubectl apply` command.
+Krush uses simple templating logic to assist in the deployment of resources to Kubernetes. It allows operators to better align their process with GitOps by removing deployment variables and allowing those to be handled by downstream manual or CI/CD processes. When run, krush takes the rendered manifests and pipes the output to a `kubectl apply` command.
 
 ## Getting Started
 
@@ -42,6 +42,16 @@ Arguments:
 Options:
   --vars=<file.vars>      File with variables defined and assigned
   -h, --help              Show this message and exit.
+```
+
+## Variable Files
+
+Variable files are in YAML format. To avoid detection as a Kubernetes manifest, the variable file should not have a `.yaml` or `.yml` file. The key name in the variable file corresponds to the template's variable name.
+
+For example, a template with a variable defined as `{{ url }}` can be provided in a variable file as:
+
+```
+url: "http://www.github.com"
 ```
 
 ## License
