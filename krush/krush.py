@@ -66,6 +66,7 @@ class krush():
     for i in tempvars:
       if i not in self.__variables:
         self.__variables.append(i)
+    self.__variables.sort()
 
   def prompt_undefined(self):
     for i in self.__variables:
