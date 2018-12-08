@@ -71,7 +71,7 @@ class krush():
   def prompt_undefined(self):
     for i in self.__variables:
       if i not in self.__vars.keys():
-        v = input("Enter value for %s:" % i)
+        v = input("Enter value for %s: " % i)
         self.__vars[i] = v
 
   def apply(self):
